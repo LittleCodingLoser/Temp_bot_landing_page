@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>體溫機器人 - 註冊</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <link rel=stylesheet type="text/css" href="static\main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class="topic">
+        <h1>要註冊KSHS體溫機器人嗎</h1>
+        <img src="{{ url_for('static', filename='image/temp_bot_says_hi.svg') }}" alt="temp bot says hi" class="bot-says-hi">
+    </div>
+    
+    <div class="description">
+        <div class="description-text">
+            <h2>體溫機器人能幹嘛</h2>
+            <p>體溫機器人提供兩種服務，一種是給每班的體溫稽查負責人，一種是給一般學生</p>
+        </div>
+        <div class="bot-features">
+            <img src="{{ url_for('static', filename='image/mail.svg') }}" alt="mail" class="mail">
+            <img src="{{ url_for('static', filename='image/file.svg') }}" alt="file" class="file">
+            <img src="{{ url_for('static', filename='image/rocket.svg') }}" alt="rocket" class="rocket">
+            <img src="{{ url_for('static', filename='image/gear.svg') }}" alt="gear" class="gear">
+            <img src="{{ url_for('static', filename='image/temp-bot-feature.svg') }}" alt="bot features" class="temp-bot-feature">
+        </div>
+    </div>
+
+    <div class="health_leader">
+        <h2>For 體溫稽查負責人</h2>
+        <p>體溫機器人能在早上10:10寄信給你，通知你還有多少人沒填體溫，這樣你不用上網查就能跟學校回報。註冊時需輸入班級、學號、密碼跟登入Google帳號，學號跟密碼就是你登入體溫稽查頁面的帳密</p>
+        <button onclick="window.location.href=&quot;{{ url_for('health_leader_page') }}&quot;" class="link-btn">
+            <span class="circle" aria-hidden="true">
+                <span class="icon arrow"></span>
+            </span>
+            <p>飛去註冊</p>
+        </button>
+    </div>
+
+    <div class="student">
+        <h2>For 一般學生</h2>
+        <p>體溫機器人能在早上九點跟十點，寄信給還沒填體溫的你，提醒你趕快填不然吃愛校。註冊時需輸入班級、座號並登入Google帳號，注意，若你們班的體溫稽查負責人尚未註冊，機器人將無法取得你的體溫填報紀錄，所以會拒絕註冊，請確保你們班的體溫稽查負責人已註冊</p>
+        <button onclick="window.location.href=&quot;{{ url_for('student_page') }}&quot;" class="link-btn">
+            <span class="circle" aria-hidden="true">
+                <span class="icon arrow"></span>
+            </span>
+            <p>飛去註冊</p>
+        </button>
+    </div>
+    <h2 class="bottom-text">請確實填寫每格並登入Google帳號，體溫機器人感謝你</h2>
+
+    <footer>Developed by <a href="https://weberchang.netlify.app/">Weber</a> and <a href="https://github.com/welly0713">Welly</a></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/ScrollTrigger.min.js"></script>
+    <script src="{{ url_for('static', filename='main_page_animation.js') }}"></script>
+</body>
+
+</html>

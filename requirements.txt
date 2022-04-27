@@ -1,0 +1,17 @@
+Click
+Flask
+gunicorn
+itsdangerous
+Jinja2
+MarkupSafe
+Werkzeug
+mysql.connector
+selenium
+lxml
+google-api-python-client
+Google
+google-auth-oauthlib
+indent
+pandas
+apscheduler
+flask-wtf

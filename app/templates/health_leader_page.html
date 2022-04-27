@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>體溫機器人 - 註冊</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="{{ google_oauth2_client_id }}">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <link rel=stylesheet type="text/css" href="static\health_leader.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <script>
+        function onSignIn(googleUser) {
+            const profile = googleUser.getBasicProfile();
+            document.querySelector("#email").value = profile.getEmail();
+            document.querySelector("small").innerHTML = `${profile.getName()}已登入`;
+        }
+    </script>
+
+<div class="form-content">
+    <form method="post" action="#">
+            <center><h2>體溫稽查負責人註冊</h2></center>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <div class="health-leader-class box">
+                <label for = "health-leader-class">班級</label>
+                <input type="text" name="health-leader-class" class="health-leader-class" required pattern="[0-9]{3}" autocomplete="off" required="required">
+            </div>
+            <div class="health-leader-id box">
+                <label for = "health-leader-id">學號</label>
+                <input type="text" name="health-leader-id" class="health-leader-id" required pattern="[0-9]{6}" autocomplete="off" required="required">
+            </div>
+            <div class="health-leader-password box">
+                <label for = "health-leader-password">密碼</label>
+                <input type="password" name="health-leader-password" class="health-leader-password" required="required" autocomplete="off" maxlength="50">
+            </div>
+            <div class="email box">
+                <label for="email">Email</label>
+                <input type="gmail" name="email" class="email" id="email" maxlength="50" required="required">
+                <small>未登入</small>
+            </div>
+            <div class="btns">
+                <div class="g-signin2"  data-width="224" data-onsuccess="onSignIn"></div>
+                <input type="submit" name="submit" value="       Submit" class="submit-btn">
+                <i class="fa-solid fa-paper-plane"></i>
+            </div>
+        </form>
+    </div>
+    <center><h3>尚未註冊</h3></center>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/gsap-latest-beta.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
+    <!-- <script src="{{ url_for('static', filename='health_leader_animation.js') }}"></script> -->
+    <script>
+        let plane_drift_animation = gsap.to("i", {repeat:-1, y: 1, yoyo: true, duration: 2, ease: Back.easeInOut.config(25), paused: true, delay: 1.5});
+        const submit_button_animation = () => {
+            const btn = document.querySelector(".submit-btn");
+            btn.value = "             Loading...";
+            gsap.to("i", {rotate: "20deg", duration: 1.5, ease: "power3.out"});
+            plane_drift_animation.play();
+        }
+
+        const stop_animation = () => {
+            const btn = document.querySelector(".submit-btn");
+            plane_drift_animation.pause();
+            // move the plane back
+            gsap.to("i", {rotate: "0deg", duration: 1.5, y: 0, ease: "power3.out"});
+            btn.value = "       Submit";
+        }
+
+        // submit the form and get the results
+        (uri => {
+        // Register a listener for submit events.
+        const form = document.querySelector('form'),
+              condition = document.querySelector("h3"),
+              csrf = "{{ csrf_token() }}";
+        form.addEventListener('submit', evt => {
+          // Suppress the default behavior of the form.
+          evt.preventDefault();
+          // Submit the form data.
+          submit_button_animation();
+          fetch(uri, {
+            headers: new Headers({
+                'x-csrf-token': csrf
+            }),
+            method: 'post',
+            body: new FormData(evt.target)
+          }).then(resp => resp.json())
+            .then(data => {
+              // get the result of the registration and pause the animation
+              stop_animation();
+              condition.innerHTML = data.condition;
+            });
+          // Reset the form.
+          evt.target.reset();
+          document.querySelector("small").innerHTML = '未登入';
+        });
+      })({{ url_for('health_leader_submit') | tojson }});
+    </script>
+</body>
+
+</html>

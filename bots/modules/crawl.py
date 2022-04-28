@@ -6,6 +6,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 import smtplib
 
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
 def crawl_temp_data(account, password):
     try:
         # Chrome Driver 路徑

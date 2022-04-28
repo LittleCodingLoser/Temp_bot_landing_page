@@ -1,5 +1,8 @@
 import mysql.connector
 import os
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
 
 def select_health_leader():
     # 初始化連接

@@ -5,6 +5,9 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 import smtplib
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
 
 def check_health_leader(health_leader_class, account, password):
     # 外層try except分流帳密根本無法用於登入的狀況

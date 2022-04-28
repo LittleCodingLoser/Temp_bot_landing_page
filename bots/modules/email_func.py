@@ -1,6 +1,9 @@
 import smtplib
 import email.message
 import os
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
 
 def send_email_to_regular_user(user):
     try:

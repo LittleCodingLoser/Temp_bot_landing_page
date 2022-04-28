@@ -58,4 +58,3 @@ def check_date():
     except Exception as error:
         print('An error occurred: %s' % error)
         return 0
-authorize_google()

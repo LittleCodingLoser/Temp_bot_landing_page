@@ -8,7 +8,7 @@ import os
 from flask_wtf.csrf import CSRFProtect, CSRFError
 from app import models
 
-GOOGLE_OAUTH2_CLIENT_ID = os.environ.get("GOOGLE_OAUTH2_CLIENT_ID")
+GOOGLE_OAUTH2_CLIENT_ID = os.getenv("GOOGLE_OAUTH2_CLIENT_ID")
 
 
 app.config['SECRET_KEY'] = os.urandom(24)
@@ -53,13 +53,11 @@ def student_submit():
     
     current_condition = models.InsertStudentData(studentClass, number, gmail)
 
+    print("API arrived")
+
     return jsonify(condition = current_condition), 200
 
 # raise CSRF error 
 @app.errorhandler(CSRFError)
 def handle_csrf_error(e):
     return e.description, 400
-
-# if __name__ == "__main__":
-#     app.debug = True
-#     app.run()

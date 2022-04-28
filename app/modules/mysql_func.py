@@ -15,7 +15,6 @@ def insert_student_data(student_class, seat_number, gmail):
         use_pure=True
     )
     myCursor = db.cursor(buffered = True) 
-    print(os.environ.get("MYSQL_HOST"))
     # 將學生資料插入學生table
     try:
         

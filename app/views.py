@@ -1,12 +1,13 @@
 from flask import render_template
 from app import app
-from flask import Flask, render_template, url_for, request, jsonify, json
+from flask import Flask, render_template, url_for, request, jsonify, json, redirect
 from google.oauth2 import id_token
 from google.auth.transport import requests
 import sys
 import os
 from flask_wtf.csrf import CSRFProtect, CSRFError
 from app import models
+import pandas as pd
 
 GOOGLE_OAUTH2_CLIENT_ID = os.getenv("GOOGLE_OAUTH2_CLIENT_ID")
 
@@ -56,6 +57,22 @@ def student_submit():
     print("API arrived")
 
     return jsonify(condition = current_condition), 200
+
+@app.route("/email_redirect")
+def email_redirect():
+    filename = "email_count.csv"
+
+    # reading the csv file on github
+    df = pd.read_csv("https://raw.githubusercontent.com/LittleCodingLoser/Temp_bot_landing_page/master/email_count.csv")
+
+    # updating the email counts of the day
+    df.loc[len(df) - 1, 'Email_counts'] = df.loc[len(df) - 1, 'Email_counts'] + 1
+    
+    # writing into the file
+    df.to_csv(filename, index=False)
+
+    # redirect to the temperature uploading page
+    return redirect("https://webap1.kshs.kh.edu.tw/kshsSSO/publicWebAP/bodyTemp/index.aspx")
 
 # raise CSRF error 
 @app.errorhandler(CSRFError)

@@ -15,7 +15,7 @@ def send_email_to_regular_user(user):
         msg.add_alternative("""
             <h3>快填體溫，不然被罰愛校!</h3>
             <p>傳送門在這</p>
-            <a href="https://webap1.kshs.kh.edu.tw/kshsSSO/publicWebAP/bodyTemp/index.aspx">點我</a>
+            <a href="http://localhost:5000/email_redirect">點我</a>
             <p>話說spy family真的很好看</p>
             <img src = "https://i.imgur.com/aY9L5Zq.jpg" style = "width: 273px; height: 184px">
         """, subtype = "html")

@@ -8,9 +8,10 @@ import os
 from flask_wtf.csrf import CSRFProtect, CSRFError
 from app import models
 import pandas as pd
+from github import Github
 
 GOOGLE_OAUTH2_CLIENT_ID = os.getenv("GOOGLE_OAUTH2_CLIENT_ID")
-
+GITHUB_ACCESS_TOKEN = os.getenv("GITHUB_ACCESS_TOKEN")
 
 app.config['SECRET_KEY'] = os.urandom(24)
 
@@ -60,14 +61,24 @@ def student_submit():
 
 @app.route("/email_redirect")
 def email_redirect():
-    filename = "email_count.csv"
-    # reading the csv file
-    df = pd.read_csv(filename)
-    # updating the email count of the day
-    df.loc[len(df) - 1, 'Email_counts'] = df.loc[len(df) - 1, 'Email_counts'] + 1
-    
-    # writing into the file
-    df.to_csv(filename, index=False)
+
+    # connect to the email_count.csv on github
+    github = Github(GITHUB_ACCESS_TOKEN)
+    repo = github.get_user().get_repo("Temp_bot_landing_page")
+    contents = repo.get_contents("email_count.csv")
+
+    # decode the content
+    contentsString = contents.decoded_content.decode()
+
+    # get the last grid on the csv, which is the email count of the day
+    tableString = contentsString.split(',')
+
+    # plus one to the count and make a new string
+    tableString[-1] = str(int(tableString[-1]) + 1)
+    newContents = ",".join(i for i in tableString)
+
+    # update the csv
+    repo.update_file(contents.path, "test", newContents, contents.sha)
 
     # redirect to the temperature uploading page
     return redirect("https://webap1.kshs.kh.edu.tw/kshsSSO/publicWebAP/bodyTemp/index.aspx")

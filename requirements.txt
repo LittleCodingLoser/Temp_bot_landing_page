@@ -16,3 +16,4 @@ pandas
 apscheduler
 flask-wtf
 python-dotenv
+PyGithub

@@ -60,12 +60,12 @@ def student_submit():
 
 @app.route("/email_redirect")
 def email_redirect():
-    filename = "email_count.csv"
+    filename = "https://raw.githubusercontent.com/LittleCodingLoser/Temp_bot_landing_page/master/email_count.csv"
 
-    # reading the csv file on github
-    df = pd.read_csv("https://raw.githubusercontent.com/LittleCodingLoser/Temp_bot_landing_page/master/email_count.csv")
+    # reading the csv file
+    df = pd.read_csv(filename)
 
-    # updating the email counts of the day
+    # updating the email count of the day
     df.loc[len(df) - 1, 'Email_counts'] = df.loc[len(df) - 1, 'Email_counts'] + 1
     
     # writing into the file

@@ -1,5 +1,5 @@
 from flask import render_template
-from app import app, api
+from app import app
 from flask import Flask, render_template, url_for, request, jsonify, json, redirect
 from google.oauth2 import id_token
 import sys

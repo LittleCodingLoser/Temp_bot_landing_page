@@ -1,8 +1,7 @@
 from flask import render_template
-from app import app
+from app import app, api
 from flask import Flask, render_template, url_for, request, jsonify, json, redirect
 from google.oauth2 import id_token
-from google.auth.transport import requests
 import sys
 import os
 from flask_wtf.csrf import CSRFProtect, CSRFError
@@ -30,12 +29,15 @@ def health_leader_page():
 @app.route("/health_leader_submit", methods=['POST'])
 def health_leader_submit():
     current_condition = "尚未註冊"
-    healthLeaderClass = int(request.form.get('health-leader-class'))
-    id = request.form.get('health-leader-id')
-    password = request.form.get('health-leader-password')
-    gmail = request.form.get('email')
+
+    health_leader_data = models.HealthLeader(
+        int(request.form.get('health-leader-class')),
+        request.form.get('health-leader-id'),
+        request.form.get('health-leader-password'),
+        request.form.get('email')
+    )
     
-    current_condition = models.InsertHealthLeaderData(healthLeaderClass, id, password, gmail)
+    current_condition = health_leader_data.insert_to_db()
 
     return jsonify(condition = current_condition), 200
 
@@ -49,13 +51,13 @@ def student_page():
 @app.route("/student_submit", methods=['POST'])
 def student_submit():
     current_condition = "尚未註冊"
-    studentClass = int(request.form.get('student-class'))
-    number = int(request.form.get('student-seat_number'))
-    gmail = request.form.get('email')
+    studentData = models.Student(
+        int(request.form.get('student-class')),
+        int(request.form.get('student-seat_number')),
+        request.form.get('email')
+    )
     
-    current_condition = models.InsertStudentData(studentClass, number, gmail)
-
-    print("API arrived")
+    current_condition = studentData.insert_to_db()
 
     return jsonify(condition = current_condition), 200
 

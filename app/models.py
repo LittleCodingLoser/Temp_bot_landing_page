@@ -3,6 +3,10 @@ from app.modules.class_exist import check_class
 import os
 import mysql.connector
 
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
 # models that handle with inserting data into the database
 class HealthLeader():
     def __init__(self, health_leader_class, student_id, password, email):
